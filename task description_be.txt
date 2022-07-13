@@ -16,9 +16,7 @@ Since that task is not confidential, you can host the project in any public git 
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
--   Napraviti listu proizvoda prvo  ne mora biti tablica 
 
--   Promjene  koje trebaju biti  neki log sustav da sve promjene biljezi u tablicu
 
 -   Bootstrap 5
 
@@ -31,4 +29,4 @@ Since that task is not confidential, you can host the project in any public git 
 
 -
 
--
+- database bak file 
