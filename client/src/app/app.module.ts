@@ -12,11 +12,12 @@ import { BooksComponent } from './books/books.component';
 import { FooterComponent } from './footer/footer.component';
 import { DetailComponent } from './books/detail/detail.component';
 import { CardComponent } from './books/card/card.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 // frameworks
 import {AngularMaterialModule} from './angular-material.module';
 import { AngularNgxBootstrapModule } from "./angular-ngx-bootstrap.module";
 import { TableComponent } from './books/table/table.component';
+import { AuthorEditComponent } from './authors/author-edit/author-edit.component';
 
 // import { } from 'ngx-bootstrap/accordion';
 // FontAwesome Icons
@@ -31,6 +32,7 @@ import { TableComponent } from './books/table/table.component';
     DetailComponent,
     CardComponent,
     TableComponent,
+    AuthorEditComponent,
   ],
   imports: [
     BrowserModule,
