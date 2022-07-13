@@ -30,7 +30,7 @@ namespace Books.Api.Controllers
         [HttpGet("{id}")]
         public async Task<Book> Get(int id)
         {
-            return await _bookRepository.GetFullBook(1);
+            return await _bookRepository.GetFullBook(id);
         }
 
         // POST api/<ValuesController>
@@ -40,15 +40,17 @@ namespace Books.Api.Controllers
         }
 
         // PUT api/<ValuesController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut]
+        public void Put(Book book )
         {
+            var added = _bookRepository.Add(book);
         }
 
         // DELETE api/<ValuesController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async void Remove(int id)
         {
+            await _bookRepository.Remove(id);
         }
     }
 }

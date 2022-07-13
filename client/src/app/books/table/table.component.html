@@ -1,0 +1,29 @@
+
+<table mat-table [dataSource]="books!"  class="mat-elevation-z8 w-100">
+<!-- id column -->
+<ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef>Id</th>
+    <td mat-cell *matCellDef="let book">{{book.id}}</td>
+</ng-container>
+<!-- title column -->
+<ng-container matColumnDef="title">
+    <th class="ps-3" mat-header-cell *matHeaderCellDef>Title</th>
+    <td class="ps-3" mat-cell *matCellDef="let book">{{book.title}}</td>
+</ng-container>
+<ng-container matColumnDef="date">
+    <th class="ps-3" mat-header-cell *matHeaderCellDef>Publish Date</th>
+    <td class="ps-3" mat-cell *matCellDef="let book">{{book.publishDate | date:'shortDate'}}</td>
+</ng-container>
+<ng-container matColumnDef="description">
+    <th class="ps-3" mat-header-cell *matHeaderCellDef>Description</th>
+    <td class="ps-3" mat-cell *matCellDef="let book">{{book.shortDescription}}</td>
+</ng-container>
+<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+<tr mat-row *matRowDef="let row; columns:displayedColumns"></tr>
+</table>
+
+<br>
+<span *ngIf="false">
+    {{books |json }}
+
+</span>

@@ -8,7 +8,6 @@ namespace Books.Api.Models
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public string Publish { get; set; }
         public DateTime PublishDate { get; set; }
         public string ShortDescription { get; set; }
         public string Description { get; set; }
@@ -21,6 +20,7 @@ namespace Books.Api.Models
         public bool IsNew => this.Id == default(int);
 
 
+        [Write(false)]
         public List<Author> Authors { get; } = new List<Author>();
     }
 }

@@ -1,0 +1,65 @@
+<div class="container-fluid bg-light shadow">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 p-2 mt-2 d-flex align-items-center">
+        <div  [routerLink]="['/books']" class="btn btn-link d-flex justify-content-center align-items-center" style="cursor: pointer!important;">
+          <fa-icon [icon]="faAngleLeft" size="2x"></fa-icon>  <span class="ms-2">Back</span> 
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-5">
+
+    <div class="row">
+        <div class="col-6">
+            <!-- <fa-icon class="float-end me-3" [icon]="faBook" ></fa-icon> -->
+            <h4 class="border-bottom pb-1 mb-3 ">Book description </h4>
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h4 class="card-title">{{book?.title}}</h4>
+                    <h5 class="card-title mb-2 text-muted">
+                       
+                            {{book?.shortDescription}}
+                       
+                    </h5>
+                    <p class="card-text">
+                        {{book?.description}}
+                    </p>
+                    <p class="card-text text-end">
+                        <small class="text-muted">
+                           Published {{book?.publishDate | date:'mediumDate' }}
+                        </small>
+                    </p>
+                </div>         
+            </div>
+        </div>
+        <div class="col-6">
+
+            <!-- <accordion>
+                <accordion-group heading="{{author.firstName}} {{author.lastName}}" *ngFor="let author of book?.authors">
+                  {{author.about}}
+                </accordion-group>
+                
+              </accordion> -->
+              <h4 class="border-bottom pb-1 mb-3">
+                Writers
+              </h4>
+              <tabset >
+                <tab *ngFor="let author of book?.authors"
+                      [heading]="getFullName(author)"  >
+                      <div class="card h-100 bg-light">
+                        <div class="card-body">
+                            {{author?.about}}
+
+                        </div>
+
+                      </div>
+                </tab>
+              </tabset>
+        </div>
+    </div> 
+   
+    <!-- {{book | json}} -->
+</div>

@@ -1,5 +1,7 @@
 ﻿using Books.Api.Models;
 using Dapper;
+using Dapper.Contrib;
+using Dapper.Contrib.Extensions;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
@@ -18,15 +20,31 @@ namespace Books.Api.Repositoriy
         {
             this.db = new SqlConnection(configuration.GetConnectionString("DefaultConnection"));
         }
-
-        public Task<Book> Add(Book book)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="book"></param>
+        /// <returns></returns>
+        public async Task<Book> Add(Book book)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                var id = await this.db.InsertAsync(book);
+                book.Id = (int)id;
+            }
+            catch (System.Exception ex)
+            {
+                var ext = ex.Message;
+                
+            }
+            
+            
+            return book;
         }
 
-        public Task<Book> Find(int id)
+        public async Task<Book> Find(int id)
         {
-            throw new System.NotImplementedException();
+            return await this.db.GetAsync<Book>(id);
         }
 
         public async Task<IEnumerable<Book>> GetAll()
@@ -89,10 +107,17 @@ namespace Books.Api.Repositoriy
             }
         }
 
-        public void Task<Remove>(int id)
+        public async Task Remove(int id)
         {
-            throw new System.NotImplementedException();
+            // await this.db.DeleteAsync(new Book { Id = id });
+
+            var prod = await Find(id);
+            //if (prod != null) this.db.Update<Book>(new Book { })
+            if (prod != null) this.db.Execute("UPDATE Books SET Active = 0 where  Id = @Id", new {Id = id});
+
         }
+
+        
 
         public Task<Book> Update(Book book)
         {

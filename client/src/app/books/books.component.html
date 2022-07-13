@@ -1,0 +1,111 @@
+<!-- {{books | json}} -->
+<div class="container-fluid bg-light shadow">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 p-4 mt-2 d-flex align-items-center">
+        <mat-slide-toggle [(ngModel)]="checked" [checked]="checked">
+          Switch view
+
+        </mat-slide-toggle>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid px-5 mt-5"  *ngIf="checked">
+  <div class="row">
+    <!-- <div class="col-12">Books {{ books?.length }}</div> -->
+    <mat-form-field appearance="standard">
+      <mat-label>Filter</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
+    </mat-form-field>
+    <ng-container>
+      <table 
+        mat-table 
+        [dataSource]="books!"  
+        multiTemplateDataRows
+        class="mat-elevation-z8 w-100">
+        <!-- id column -->
+        <ng-container matColumnDef="id" >
+            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <td mat-cell *matCellDef="let book">{{book.id}}</td>
+        </ng-container>
+        <!-- title column -->
+        <ng-container matColumnDef="title">
+            <th class="ps-3" mat-header-cell *matHeaderCellDef>Title</th>
+            <td class="ps-3" mat-cell *matCellDef="let book">{{book.title}}</td>
+        </ng-container>
+        <ng-container matColumnDef="published">
+            <th class="ps-3" mat-header-cell *matHeaderCellDef>Publish Date</th>
+            <td class="ps-3" mat-cell *matCellDef="let book">{{book.publishDate | date:'shortDate'}}</td>
+        </ng-container>
+        <ng-container matColumnDef="description">
+            <th class="ps-3" mat-header-cell *matHeaderCellDef>Description</th>
+            <td class="ps-3" mat-cell *matCellDef="let book">{{book.shortDescription}}</td>
+        </ng-container>
+
+        <!-- EXPANDED -->
+        <ng-container matColumnDef="expandedDetail">
+          <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
+            <div class="example-element-detail" [@detailExpand]="element.expanded ? 'expanded' : 'collapsed'">
+              <table class="table" style="width: 100%;">
+                <thead>
+                  <tr>
+                    <th scope="col">Authors</th>
+                    <th scope="col">Description</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr  *ngFor="let item of element.authors">
+                    <!-- <td><img src="https://picsum.photos/id/{{element.id}}/150/100" alt="thumbnail"></td> -->
+                    <td  style="width: 200px;"> 
+                      <ng-container>
+                        {{item.firstName}} {{item.lastName}},&nbsp;
+                      </ng-container>
+                    </td>
+                    <td>
+                      {{item.about}} 
+                    </td>
+                    <td>
+                      {{element.link}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </td>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="example-element-row" [class.example-expanded-row]="element.expanded" (click)="toggleRow(element)"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+   
+        </table>
+        <mat-paginator
+          [pageSize]="5"
+          [pageSizeOptions]="[5, 10, 15]"
+          showFirstLastButtons></mat-paginator>
+    </ng-container>
+
+
+
+  </div>
+
+  <div class="row">
+    <div class="col-12 mt-4 d-flex justify-content-center">
+      <!-- <pagination 
+    [boundaryLinks]="true"  
+    [totalItems]="20" 
+    previousText="&lsaquo;" 
+    nextText="&rsaquo;" 
+    firstText="&laquo;" 
+    lastText="&raquo;"></pagination> -->
+    </div>
+  </div>
+</div>
+<div class="container-fluid  px-5 mt-5" >
+  <ng-container *ngIf="!checked">
+    <app-card [booksFromBookComponent]="data" [faCircleInfo]="faCircleInfo" ></app-card>
+  </ng-container>
+</div>

@@ -12,7 +12,7 @@ namespace Books.Api.Repositoriy
         Task<Book> Add(Book book);
         Task<Book> Update(Book book);
 
-        void Task<Remove>(int id);
+        Task Remove(int id);
 
         Task<Book> GetFullBook(int id);
 

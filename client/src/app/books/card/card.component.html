@@ -1,0 +1,17 @@
+<div class="row row-cols-2 g-4">
+<div class="col-sm-6" *ngFor="let book of booksFromBookComponent">
+    <div class="card h-100 bg-light shadow">
+      <!-- <img class="card-img-top" src="holder.js/100x180/?text=Image cap" alt="Card image cap"> -->
+      <div class="card-body">
+        <h4 class="card-title">{{ book.title }}</h4>
+        <p class="card-text">{{ book.shortDescription }}</p>
+      </div>
+      <div class="card-footer" *ngIf="book.authors">
+        <h5 *ngFor="let author of book.authors" class="badge bg-light me-2 text-dark fw-normal">{{ author.firstName }} {{ author.lastName }}</h5>
+          <div class="btn btn-sm btn-primary float-end" title="View book details" routerLink="/books/{{ getClean(book.title)}}/{{book.id}}">
+              <fa-icon [icon]="faCircleInfo" size="lg"></fa-icon> 
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
