@@ -8,10 +8,13 @@ namespace Books.Api.Models
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public DateTime PublishDate { get; set; }
+
         public string ShortDescription { get; set; }
-        public string Description { get; set; }
-        public int Active { get; set; }
+
+        public DateTime PublishDate { get; set; }
+        public string Image { get; set; }
+
+
 
         /// <summary>
         /// Check if new book or is existing 
@@ -22,5 +25,6 @@ namespace Books.Api.Models
 
         [Write(false)]
         public List<Author> Authors { get; } = new List<Author>();
+        public List<TrackChanges> BooksHistory { get;} = new List<TrackChanges>();
     }
 }

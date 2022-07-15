@@ -1,15 +1,15 @@
-﻿namespace Books.Api.Models
+﻿using Dapper.Contrib.Extensions;
+
+namespace Books.Api.Models
 {
     public class Author
     {
         public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        // Author description source...
+        public string Name { get; set; }
         public string Link { get; set; }
-        public string Title { get; set; }
-        public string About{ get; set; }
-        public int  Active { get; set; }
+       
 
+        [Computed]
+        public bool IsNew => this.Id == default(int);
     }
 }

@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Book } from '../_models/book';
 import { BookService } from '../_services/book.service';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
+import { faClockRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 
 import { ActivatedRoute } from '@angular/router';
@@ -27,12 +28,15 @@ export class BooksComponent implements OnInit {
   books?: MatTableDataSource<Book>
   @ViewChild(MatPaginator) paginator?: MatPaginator;
 
+  /// ICONS
   faCircleInfo=faCircleInfo;
+  faClockRotateLeft = faClockRotateLeft;
+
   checked=true;
   data:any;
   
   displayColumns=['Id', 'firstName', 'Description', 'Publish date', 'Authors'];
-  displayedColumns:string[]=['id', 'title', 'published', 'description'];
+  displayedColumns:string[]=['id', 'link','title', 'published', 'description'];
   columnsToDisplayWithExpand = [...this.displayColumns, 'expand'];
   expandedElement?:Author | null;
   dataSource:any;
@@ -43,7 +47,7 @@ export class BooksComponent implements OnInit {
     // Uncommnet to open only single row at once
     // ELEMENT_DATA.forEach(row => {
     //   row.expanded = false;
-    // })
+    //.... })
     element.expanded = !element.expanded
   }
 
@@ -56,6 +60,7 @@ export class BooksComponent implements OnInit {
      { next: (response)=> {
         this.data = response;
         this.books =new MatTableDataSource<Book>(response);
+        console.log(this.books);
         this.books.paginator = this.paginator!;
       },error:(err) =>{
         console.log("Error load books -> ", err);
@@ -67,6 +72,11 @@ export class BooksComponent implements OnInit {
     const filterValue = (event.target as HTMLInputElement).value;
     this.books!.filter = filterValue.trim().toLowerCase();
   }
+
+  getTitleList(titles:any){
+    return titles.map((t:any) =>t.title.trim()).join("</br>");
+    }
+  
  
 
 }

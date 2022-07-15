@@ -34,6 +34,7 @@ namespace Books
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             
             services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<IAuthorRepository, AuthorRepository>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

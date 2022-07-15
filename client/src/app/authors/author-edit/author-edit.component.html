@@ -1,110 +1,72 @@
-<div class="container mt-5">
+<div class="container mt-5 col-12 col-md-7" >
   <div class="card border-secondary">
     <div class="card-header">
       <h2 class="card-title">Create new author</h2>
     </div>
-  <form name="form" #nf="ngForm" (ngSubmit)="nf.form.valid && onSubmit()" novalidate>
-      <div class="card-body">
+    <form
+      #authorForm="ngForm"     
+      (ngSubmit)="onSubmit(authorForm.value)"
+     
+    >
+      <div class="card-body py-5">
         <div class="row g-0">
           <div class="col-12">
-              <div class="col-6">
+            <!-- <div class="col-6">
                   <div class="row">
                       <strong class="col-2 col-form-label fw-bolder">Active</strong>
                       <div class="col-7">
-                          <mat-slide-toggle name="act" [(ngModel)]="author.active" [checked]="!!author.active">
+                          <mat-slide-toggle name="act" disabled [(ngModel)]="author.active" [checked]="!!author.active">
                             </mat-slide-toggle>
                       </div>
                   </div>
-              </div>
+              </div> -->
           </div>
-          <div class="col-6">
+
+          <div class="col-8 mt-2 offset-2 ">
             <div class="row">
-              <label for="name" class="col-2 col-form-label fw-bolder">First name*</label>
+              <label for="name" class="col-2 col-form-label fw-bolder"
+                >Name*</label
+              >
               <div class="col-7">
                 <input
-                  type="text"
-                  name="nime"
-                  [(ngModel)]="author.firstName"
+                required
+                ngModel
+                name="name"
+                type="text"
+                  #name="ngModel"
                   class="form-control"
-                  autocomplete="no"
-                  #firstName="ngModel"
-                  required
+                  id="name"
+                />
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="col-8 mt-2 offset-2">
+            <div class="row">
+              <label for="lastName" class="col-2 col-form-label fw-bolder"
+                >Link
+              </label>
+              <div class="col-7">
+                <input
+                    ngModel
+                  type="text"
+                  #link="ngModel"
+                  name="link"
+                  id="link"
+                  class="form-control"
                   
                 />
-                <div *ngIf=" nf.submitted && firstName!.errors!['required']" class="text-danger">First name is required</div>
               </div>
             </div>
           </div>
-  
-          <div class="col-6">
-            <div class="row">
-              <label for="surname" class="col-2 col-form-label fw-bolder">Last name*</label>
-              <div class="col-7">
-                <input
-                  type="text"
-                  name="last"
-                  [(ngModel)]="author.lastName"
-                  class="form-control"
-                  autocomplete="no"
-                  #lastName="ngModel"
-                  required
-                />
-                <div *ngIf="nf.submitted && lastName!.errors!['required']" class="text-danger">Last name is required</div>
-              </div>
-            </div>
-          </div>
-          <div class="col-6 mt-2">
-            <div class="row">
-              <label for="link" class="col-2 col-form-label fw-bolder">Title</label>
-              <div class="col-7">
-                <input
-                  type="text"
-                  name="title"
-                  [(ngModel)]="author.title"
-                  class="form-control"
-                  autocomplete="no"
-                  #title="ngModel"
-                />
-              </div>
-            </div>
-          </div>
-          <div class="col-6 mt-2">
-            <div class="row">
-              <label for="link" class="col-2 col-form-label fw-bolder">Link</label>
-              <div class="col-7">
-                <input
-                name="link"
-                  type="text"
-                  [(ngModel)]="author.link"
-                  class="form-control"
-                  autocomplete="no"
-                  #link="ngModel"
-                />
-              </div>
-            </div>
-          </div>
-          <div class="col-12 mt-2">
-            <div class="row pe-4">
-              <strong for="about" class="col-1 col-form-label fw-bolder">Description</strong>
-              <div class="col-10 pe-5">
-                <textarea
-                    name="about"
-                  type="text"
-                  [(ngModel)]="author.about"
-                  class="form-control" 
-                  style="height: 200px;" autocomplete="no" #about="ngModel">
-              </textarea>
-              </div>
-            </div>
-          </div>
-  
         </div>
       </div>
-<div class="card-footer d-flex justify-content-end px-5">
-    <button (click)="onReset(nf)" class="btn btn-warning me-2">Cancel</button>
-        <button type="submit" class="btn btn-success me-2 me-5">Create</button>
-</div>
-  </form>  
-    
+      <div class="card-footer d-flex justify-content-end px-5">
+        <!-- <div (click)="onReset(nf)" class="btn btn-warning me-2">Cancel</div> -->
+        <button type="submit" [class.disabled]="!authorForm.valid" class="btn btn-success me-2 me-5">Create</button>
+      </div>
+    </form>
   </div>
 </div>

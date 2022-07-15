@@ -29,10 +29,27 @@
             <th mat-header-cell *matHeaderCellDef>ID</th>
             <td mat-cell *matCellDef="let book">{{book.id}}</td>
         </ng-container>
+        <ng-container matColumnDef="link" >
+          <th mat-header-cell *matHeaderCellDef>Image</th>
+          <td mat-cell *matCellDef="let book" class="py-3">
+            
+            <img  [src]="book.image" alt="" class="img-thumbnail rounded img-fluid shadow" style="max-height: 100px">
+            
+          </td>
+      </ng-container>
         <!-- title column -->
         <ng-container matColumnDef="title">
             <th class="ps-3" mat-header-cell *matHeaderCellDef>Title</th>
-            <td class="ps-3" mat-cell *matCellDef="let book">{{book.title}}</td>
+            <td class="ps-3" mat-cell *matCellDef="let book">
+              {{book.title}}  
+              <!-- <ng-template #popTemplate><div [innerHtml]="getTitleList(book.booksHistory)"></div></ng-template> -->
+              <fa-icon 
+                class="btn btn-link ms-3"
+                [icon]="faClockRotateLeft" 
+                size="lg" 
+                *ngIf="book.booksHistory.length>0" 
+                ></fa-icon>
+            </td>
         </ng-container>
         <ng-container matColumnDef="published">
             <th class="ps-3" mat-header-cell *matHeaderCellDef>Publish Date</th>
@@ -40,7 +57,14 @@
         </ng-container>
         <ng-container matColumnDef="description">
             <th class="ps-3" mat-header-cell *matHeaderCellDef>Description</th>
-            <td class="ps-3" mat-cell *matCellDef="let book">{{book.shortDescription}}</td>
+            <td class="ps-3" mat-cell *matCellDef="let book">
+              
+              {{book.shortDescription}}
+              <div class="text-end w-100 pe-5 text-muted">
+                by <span *ngFor="let item of book.authors; let i = index"> <span *ngIf="i>0">, </span> {{item.name}}</span>
+              </div>
+
+            </td>
         </ng-container>
 
         <!-- EXPANDED -->
@@ -50,24 +74,25 @@
               <table class="table" style="width: 100%;">
                 <thead>
                   <tr>
-                    <th scope="col">Authors</th>
-                    <th scope="col">Description</th>
+                    <th scope="col">Track Title Changes</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">User</th>
                     
                   </tr>
                 </thead>
                 <tbody>
-                  <tr  *ngFor="let item of element.authors">
+                  <tr  *ngFor="let item of element.booksHistory">
                     <!-- <td><img src="https://picsum.photos/id/{{element.id}}/150/100" alt="thumbnail"></td> -->
                     <td  style="width: 200px;"> 
                       <ng-container>
-                        {{item.firstName}} {{item.lastName}},&nbsp;
+                        {{item.title}} 
                       </ng-container>
                     </td>
                     <td>
-                      {{item.about}} 
+                      {{item.changed | date: 'short' }} 
                     </td>
                     <td>
-                      {{element.link}}
+                      {{item.userName}}
                     </td>
                   </tr>
                 </tbody>
@@ -83,8 +108,8 @@
    
         </table>
         <mat-paginator
-          [pageSize]="5"
-          [pageSizeOptions]="[5, 10, 15]"
+          [pageSize]="10"
+          [pageSizeOptions]="[10, 20, 30, 50]"
           showFirstLastButtons></mat-paginator>
     </ng-container>
 

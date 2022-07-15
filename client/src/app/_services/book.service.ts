@@ -19,4 +19,5 @@ export class BookService {
   getBook(id:number){
     return this.httpClient.get<Book>(`${this.baseUrl}book/${id}`);
   }
+
 }

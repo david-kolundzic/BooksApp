@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { faShirtsinbulk } from '@fortawesome/free-brands-svg-icons';
 import { Author } from 'src/app/_models/author';
+import { AuthorService } from 'src/app/_services/author.service';
 
 @Component({
   selector: 'app-author-edit',
@@ -8,12 +10,10 @@ import { Author } from 'src/app/_models/author';
   styleUrls: ['./author-edit.component.css']
 })
 export class AuthorEditComponent implements OnInit {
-  author = new Author();
-  firstName?:string;
-  checked=true;
+ checked=true;
 
  
-  constructor() { 
+  constructor(private authorService: AuthorService) { 
     
    }
 
@@ -21,13 +21,25 @@ export class AuthorEditComponent implements OnInit {
     // this.author.active = false;
   }
 
-  onSubmit(){
+  onSubmit(form:any){
     console.log("SUBMITED");
-    console.log(this.author);
+    console.log("propba")
+    console.log(form)
+    
+    this.authorService.saveAuthor(form).subscribe({
+      next: (response)=>{
+        console.log(response);
+      },
+      error: error=>{
+        console.log("Error create Author>");
+        console.log(error);
+      }
+    })
+
     
   };
-  onReset(nf:any){
-
+  onReset(nf:NgForm){
+    nf.reset();
   }
 
 }

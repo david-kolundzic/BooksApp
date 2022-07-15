@@ -10,13 +10,15 @@ namespace Books.Api.Repositoriy
         
         Task<IEnumerable<Book>> GetAll();
         Task<Book> Add(Book book);
-        Task<Book> Update(Book book);
+        Task<Book> Update(Book book, string user);
 
         Task Remove(int id);
 
         Task<Book> GetFullBook(int id);
 
         Task<IList<Book>> GetAllBooksWithAuthors();
+
+        Task<IEnumerable<TrackChanges>> GetTracks();
 
     }
 }

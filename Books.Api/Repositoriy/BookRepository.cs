@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace Books.Api.Repositoriy
 {
@@ -42,14 +43,21 @@ namespace Books.Api.Repositoriy
             return book;
         }
 
+        public async Task<IEnumerable<TrackChanges>> GetTracks()
+        {
+            var r = await this.db.QueryAsync<TrackChanges>("SELECT * FROM Track_Changes");
+                return r.ToList();
+        }
+
         public async Task<Book> Find(int id)
         {
-            return await this.db.GetAsync<Book>(id);
+            var resault = await this.db.QueryAsync<Book>("SELECT * FROM Book WHERE Id = @Id", new { Id = id });
+            return resault.SingleOrDefault();
         }
 
         public async Task<IEnumerable<Book>> GetAll()
         {
-            var sql = "SELECT * FROM Books";
+            var sql = "SELECT * FROM Book";
             var resault = await this.db.QueryAsync<Book>(sql);
             return resault.ToList();
         }
@@ -60,10 +68,10 @@ namespace Books.Api.Repositoriy
         /// <returns></returns>
         public async Task<IList<Book>> GetAllBooksWithAuthors()
         {
-            var sql = "SELECT B.Id, B.Title, B.PublishDate, B.ShortDescription, B.Active,A.Id , A.FirstName, A.LastName, A.About, A.Active " +
-                "FROM Books AS B " +
-                "INNER JOIN Book_Authors as BA  ON B.Id = BA.BookId " +
-                "INNER JOIN Authors AS A ON BA.AuthorId = A.Id"; 
+            var sql = "SELECT B.Id, B.Title, B.PublishDate, B.ShortDescription, B.Image ,A.Id , A.Name,  A.Link " +
+                "FROM Book AS B " +
+                "INNER JOIN Book_Author as BA  ON B.Id = BA.BookId " +
+                "INNER JOIN Author AS A ON BA.AuthorId = A.Id"; 
 
             var bookDict = new Dictionary<int, Book>(); 
 
@@ -87,9 +95,9 @@ namespace Books.Api.Repositoriy
         public async Task<Book> GetFullBook(int id)
         {
             var sql =
-               "SELECT * FROM Books AS B  where B.Id = @Id; " +
-               "SELECT * FROM Book_Authors AS BA " +
-               "INNER JOIN Authors AS  A ON BA.AuthorId = A.Id " +
+               "SELECT * FROM Book AS B  where B.Id = @Id; " +
+               "SELECT * FROM Book_Author AS BA " +
+               "INNER JOIN Author AS  A ON BA.AuthorId = A.Id " +
                "WHERE BA.BookId = @Id;";
 
             using (var multipleResult = await this.db.QueryMultipleAsync(sql, new { Id = id }))
@@ -111,17 +119,50 @@ namespace Books.Api.Repositoriy
         {
             // await this.db.DeleteAsync(new Book { Id = id });
 
-            var prod = await Find(id);
-            //if (prod != null) this.db.Update<Book>(new Book { })
-            if (prod != null) this.db.Execute("UPDATE Books SET Active = 0 where  Id = @Id", new {Id = id});
+            using (var txScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                var checkIfExistInParent = await this.db.QueryAsync("select * from Book_Author where  BookId = @Id", new { Id = id });
+
+                if (checkIfExistInParent != null)
+                {
+                    foreach (var item in checkIfExistInParent)
+                    {
+                        await this.db.ExecuteAsync("DELETE FROM  Book_Author where  BookId = @Id", new { Id = id }).ConfigureAwait(false);
+
+                    }
+                }
+                await this.db.ExecuteAsync("DELETE FROM Book WHERE Id = @Id", new { id });
+
+                txScope.Complete();
+            }
 
         }
 
         
 
-        public Task<Book> Update(Book book)
+        public async Task<Book> Update(Book book, string user = null)
         {
-            throw new System.NotImplementedException();
+            
+            using (var txScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+
+                var temp = await this.db.QueryFirstOrDefaultAsync<Book>("SELECT * FROM Book where Id = @Id", new { Id = book.Id });
+                if (temp != null)
+                {
+                    var param = new { Title = temp.Title, Description= temp.ShortDescription, IdBook = book.Id, UserName = "Ivica" };
+
+                    var query = "INSERT INTO Track_Changes (Title, Description, IdBook)  values ( @Title, @Description, @IdBook); " +
+                        "SELECT CAST(SCOPE_IDENTITY() as int)";
+                    await this.db.QueryAsync<int>(query, param);
+                }
+                var sql = "UPDATE Book SET Title = @Title, ShortDescription = @ShortDescription, PublishDate = @PublishDate , Image = @Image WHERE Id = @Id";
+                
+                await this.db.ExecuteAsync(sql, book);
+
+                txScope.Complete();
+            }
+           
+            return book;
         }
     }
 }
