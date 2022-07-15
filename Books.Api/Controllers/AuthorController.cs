@@ -34,11 +34,13 @@ namespace Books.Api.Controllers
             return res;
         }
 
-        // POST api/<AuthorController>
+        
         [HttpPost("Update")]
-        public async Task Update(Author author)
+        public async Task<Author> Update(Author author)
         {
-            await _authorRepository.Update(author);
+             
+            var r = await _authorRepository.Update(author);
+            return r;
         }
 
         

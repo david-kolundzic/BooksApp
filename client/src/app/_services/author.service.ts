@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Author } from '../_models/author';
+import { Author,  } from '../_models/author';
 
 @Injectable({
   providedIn: 'root'
@@ -20,10 +20,10 @@ export class AuthorService {
     return this.httpClient.get<any>(`${this.baseUrl}author/${id}`);
   }
 
-  saveAuthor(author: any){
+  saveAuthor(author: Author):Observable<any>{
     console.log("SAVE AUTHOR")
     console.log(author)
-    return this.httpClient.post<any>(`${this.baseUrl}author/create`, author);
+    return this.httpClient.put<Author>(this.baseUrl +""+"author/create", author);
   }
   
 

@@ -31,9 +31,6 @@ export class DetailComponent implements OnInit {
     } );
   }
 
-  getFullName(author:Author):string{
-    return `${author.firstName} ${author.lastName}`
-  }
-
+  
 
 }

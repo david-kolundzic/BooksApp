@@ -9,24 +9,25 @@ import { AuthorService } from 'src/app/_services/author.service';
   templateUrl: './author-edit.component.html',
   styleUrls: ['./author-edit.component.css']
 })
+
 export class AuthorEditComponent implements OnInit {
  checked=true;
-
- 
+  user:any;
+  model:Author = new Author();
   constructor(private authorService: AuthorService) { 
     
    }
 
   ngOnInit(): void {
-    // this.author.active = false;
+    this.getAll();
   }
 
-  onSubmit(form:any){
+  onSubmit(form:NgForm){
     console.log("SUBMITED");
     console.log("propba")
     console.log(form)
     
-    this.authorService.saveAuthor(form).subscribe({
+    this.authorService.saveAuthor(this.model).subscribe({
       next: (response)=>{
         console.log(response);
       },
@@ -40,6 +41,19 @@ export class AuthorEditComponent implements OnInit {
   };
   onReset(nf:NgForm){
     nf.reset();
+  }
+
+  getAll(){
+    this.authorService.getAuthors().subscribe({
+      next:(response)=> {
+        console.log("Response");
+        console.log(response)
+      },
+      error: error=>{
+        console.log("Error get Author>");
+        console.log(error);
+      }
+    });
   }
 
 }
