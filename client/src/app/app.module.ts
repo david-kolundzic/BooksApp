@@ -18,6 +18,7 @@ import {AngularMaterialModule} from './angular-material.module';
 import { AngularNgxBootstrapModule } from "./angular-ngx-bootstrap.module";
 import { TableComponent } from './books/table/table.component';
 import { AuthorEditComponent } from './authors/author-edit/author-edit.component';
+import { ToastrModule} from 'ngx-toastr';
 
 // import { } from 'ngx-bootstrap/accordion';
 // FontAwesome Icons
@@ -32,7 +33,7 @@ import { AuthorEditComponent } from './authors/author-edit/author-edit.component
     DetailComponent,
     CardComponent,
     TableComponent,
-    AuthorEditComponent,
+    AuthorEditComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +43,10 @@ import { AuthorEditComponent } from './authors/author-edit/author-edit.component
     FontAwesomeModule,    
     BrowserAnimationsModule,
     AngularMaterialModule,
-    AngularNgxBootstrapModule
+    AngularNgxBootstrapModule,
+    ToastrModule.forRoot({
+      positionClass: 'toast-bottom-right'
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

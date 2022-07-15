@@ -3,6 +3,7 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { PopoverModule } from 'ngx-bootstrap/popover';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 
 @NgModule({
@@ -11,13 +12,16 @@ import { PopoverModule } from 'ngx-bootstrap/popover';
     AccordionModule.forRoot(),
     TabsModule.forRoot(),
     PaginationModule.forRoot(),
-    PopoverModule.forRoot()
+    PopoverModule.forRoot(),
+    ModalModule.forRoot(),
   ],
   exports:[
     AccordionModule,
     TabsModule,
     PaginationModule,
-    PopoverModule
+    PopoverModule,
+    ModalModule,
+   
   ]
 })
 export class AngularNgxBootstrapModule { }

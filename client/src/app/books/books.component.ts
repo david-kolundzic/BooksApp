@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Book } from '../_models/book';
 import { BookService } from '../_services/book.service';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
@@ -9,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { Author } from '../_models/author';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-books',
@@ -26,8 +27,11 @@ import { Author } from '../_models/author';
 export class BooksComponent implements OnInit {
   // books?:Book[];
   books?: MatTableDataSource<Book>
-  @ViewChild(MatPaginator) paginator?: MatPaginator;
 
+  newBook:Book = {} as Book;
+
+  @ViewChild(MatPaginator) paginator?: MatPaginator;
+modalRef?: BsModalRef;
   /// ICONS
   faCircleInfo=faCircleInfo;
   faClockRotateLeft = faClockRotateLeft;
@@ -41,7 +45,7 @@ export class BooksComponent implements OnInit {
   expandedElement?:Author | null;
   dataSource:any;
 
-  constructor(private bookService: BookService, private route: ActivatedRoute) { }
+  constructor(private bookService: BookService, private route: ActivatedRoute, private modalService: BsModalService) { }
 
   toggleRow(element: { expanded: boolean; }) {
     // Uncommnet to open only single row at once
@@ -77,6 +81,8 @@ export class BooksComponent implements OnInit {
     return titles.map((t:any) =>t.title.trim()).join("</br>");
     }
   
- 
+ openModal(template: TemplateRef<any>){
+  this.modalRef = this.modalService.show(template);
+ }
 
 }

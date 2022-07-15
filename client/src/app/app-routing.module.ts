@@ -9,6 +9,7 @@ const routes: Routes = [
   {path:'', component: HomeComponent},
   {path:'home', component: HomeComponent},
   {path:'books', component: BooksComponent}, 
+  {path:'books/create', component: BooksComponent}, 
   {path:'books/:name/:id', component: DetailComponent}, 
   {path:'author/edit/:id', component: AuthorEditComponent}, 
 ];

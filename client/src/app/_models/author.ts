@@ -33,6 +33,6 @@
   
 export class Author{
   id?:number;
-  fullName?: string;
+  name?: string;
   link?: string;
 };

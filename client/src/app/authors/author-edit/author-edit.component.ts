@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 import { faShirtsinbulk } from '@fortawesome/free-brands-svg-icons';
 import { Author } from 'src/app/_models/author';
 import { AuthorService } from 'src/app/_services/author.service';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-author-edit',
@@ -14,7 +16,7 @@ export class AuthorEditComponent implements OnInit {
  checked=true;
   user:any;
   model:Author = new Author();
-  constructor(private authorService: AuthorService) { 
+  constructor(private authorService: AuthorService, private router: Router, private toastr: ToastrService) { 
     
    }
 
@@ -30,10 +32,15 @@ export class AuthorEditComponent implements OnInit {
     this.authorService.saveAuthor(this.model).subscribe({
       next: (response)=>{
         console.log(response);
+       
+        this.router.navigateByUrl('/')
+
+        this.toastr.success("Author: "+this.model.name + " craated", "Success!")
+        this.model = {};
       },
       error: error=>{
         console.log("Error create Author>");
-        console.log(error);
+        this.toastr.error(error.error, "Error message")
       }
     })
 

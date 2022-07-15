@@ -7,10 +7,60 @@
           Switch view
 
         </mat-slide-toggle>
+
+        <button class="btn btn-primary ms-auto" (click)="lgModal.show()">Create new book</button>
+        <!-- <button class="btn btn-outline-primary ms-auto" (click)="openModal(template)"><i class="fa-solid fa-book-open-cover"></i> Create book</button> -->
       </div>
     </div>
   </div>
 </div>
+<!--Large modal-->
+
+ 
+<div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1"
+     role="dialog" aria-labelledby="dialog-sizes-name1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="dialog-sizes-name1" class="modal-title pull-left">Create book</h2>
+        <button type="button" class="btn-close close pull-right" (click)="lgModal.hide()" aria-label="Close">
+          <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form >
+          <form class="form-floating mb-3">
+            <input type="email" class="form-control" id="floatingInputValue" placeholder="name@example.com" value="test@example.com">
+            <label for="floatingInputValue">Input with Title</label>
+          </form>
+          <div class="form-floating mb-3">
+            <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+            <label for="floatingTextarea2">Input short description</label>
+          </div>
+          <form class="form-floating mb-3">
+            <input type="email" class="form-control" id="floatingInputValue" placeholder="name@example.com" value="test@example.com">
+            <label for="floatingInputValue">Publish Date</label>
+          </form>
+          <form class="form-floating mb-3">
+            <input type="email" class="form-control" id="floatingInputValue" placeholder="name@example.com" value="test@example.com">
+            <label for="floatingInputValue">Authors</label>
+          </form>
+          <form class="form-floating mb-3">
+            <input type="email" class="form-control" id="floatingInputValue" placeholder="name@example.com" value="test@example.com">
+            <label for="floatingInputValue">Image link</label>
+          </form>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div class="btn btn-warning">Cancel</div>
+        <div class="btn btn-success">Save</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- End large modal -->
 <div class="container-fluid px-5 mt-5"  *ngIf="checked">
   <div class="row">
     <!-- <div class="col-12">Books {{ books?.length }}</div> -->
