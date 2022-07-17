@@ -21,8 +21,7 @@ export class AuthorService {
   }
 
   saveAuthor(author: Author):Observable<any>{
-    console.log("SAVE AUTHOR")
-    console.log(author)
+    
     return this.httpClient.put<Author>(this.baseUrl +""+"author/create", author);
   }
   

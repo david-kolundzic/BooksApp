@@ -4,6 +4,8 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 
 
 @NgModule({
@@ -14,6 +16,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     PaginationModule.forRoot(),
     PopoverModule.forRoot(),
     ModalModule.forRoot(),
+    BsDatepickerModule.forRoot(),
+    TypeaheadModule.forRoot()
   ],
   exports:[
     AccordionModule,
@@ -21,6 +25,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     PaginationModule,
     PopoverModule,
     ModalModule,
+    BsDatepickerModule,
+    TypeaheadModule,
    
   ]
 })

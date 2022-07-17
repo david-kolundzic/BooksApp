@@ -155,14 +155,36 @@ namespace Books.Api.Repositoriy
                         "SELECT CAST(SCOPE_IDENTITY() as int)";
                     await this.db.QueryAsync<int>(query, param);
                 }
-                var sql = "UPDATE Book SET Title = @Title, ShortDescription = @ShortDescription, PublishDate = @PublishDate , Image = @Image WHERE Id = @Id";
-                
-                await this.db.ExecuteAsync(sql, book);
+                var sql = "";
+                if (book.IsNew)
+                {
+                    //var param = new {}
+                    sql = "INSERT INTO Book (Title,ShortDescription,PublishDate) values (@Title, @ShortDescription, @PublishDate)" +
+                        "select cast(SCOPE_IDENTITY() AS int)";
+                    var ident =   await this.db.QuerySingleAsync<int>(sql, book);
+                    foreach (var author in book.Authors)
+                    {
+                        if (author != null)
+                        {
+                            await this.db.QueryAsync("INSERT INTO Book_Author (BookId,AuthorId) values (@BookId, @AuthorId)", new { BookId=ident, AuthorId = author.Id}).ConfigureAwait(false);
+                        }
+
+                    }
+                }
+                else
+                {
+
+                    sql = "UPDATE Book SET Title = @Title, ShortDescription = @ShortDescription, PublishDate = @PublishDate , Image = @Image WHERE Id = @Id";
+                    await this.db.ExecuteAsync(sql, book);
+
+                }
+
 
                 txScope.Complete();
             }
            
             return book;
         }
+
     }
 }

@@ -24,7 +24,7 @@ namespace Books.Api.Models
 
 
         [Write(false)]
-        public List<Author> Authors { get; } = new List<Author>();
+        public List<Author> Authors { get; set; } = new List<Author>();
         public List<TrackChanges> BooksHistory { get;} = new List<TrackChanges>();
     }
 }

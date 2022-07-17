@@ -19,6 +19,7 @@ import { AngularNgxBootstrapModule } from "./angular-ngx-bootstrap.module";
 import { TableComponent } from './books/table/table.component';
 import { AuthorEditComponent } from './authors/author-edit/author-edit.component';
 import { ToastrModule} from 'ngx-toastr';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 // import { } from 'ngx-bootstrap/accordion';
 // FontAwesome Icons
@@ -46,7 +47,8 @@ import { ToastrModule} from 'ngx-toastr';
     AngularNgxBootstrapModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right'
-    })
+    }),
+    BsDatepickerModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

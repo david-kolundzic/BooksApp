@@ -5,10 +5,10 @@
       <div class="col-12 p-4 mt-2 d-flex align-items-center">
         <mat-slide-toggle [(ngModel)]="checked" [checked]="checked">
           Switch view
-
         </mat-slide-toggle>
 
-        <button class="btn btn-primary ms-auto" (click)="lgModal.show()">Create new book</button>
+        <!-- <button class="btn btn-primary ms-auto" (click)="lgModal.show()">Create new book</button> -->
+        <button class="btn btn-primary ms-auto" (click)="openModal(lgModal)">Create book</button>
         <!-- <button class="btn btn-outline-primary ms-auto" (click)="openModal(template)"><i class="fa-solid fa-book-open-cover"></i> Create book</button> -->
       </div>
     </div>
@@ -17,48 +17,70 @@
 <!--Large modal-->
 
  
-<div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1"
-     role="dialog" aria-labelledby="dialog-sizes-name1">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
+<ng-template #lgModal>
       <div class="modal-header">
-        <h2 id="dialog-sizes-name1" class="modal-title pull-left">Create book</h2>
-        <button type="button" class="btn-close close pull-right" (click)="lgModal.hide()" aria-label="Close">
+        <span id="dialog-sizes-name1" class="modal-title .fs-4 fw-bolder pull-left">Create book</span>
+        <button type="button" class="btn-close close pull-right" (click)="cancelModal(lgModal)" aria-label="Close">
           <span aria-hidden="true" class="visually-hidden">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <form >
-          <form class="form-floating mb-3">
-            <input type="email" class="form-control" id="floatingInputValue" placeholder="name@example.com" value="test@example.com">
-            <label for="floatingInputValue">Input with Title</label>
-          </form>
           <div class="form-floating mb-3">
-            <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+            <input type="text" 
+            class="form-control" 
+            id="floatingInputValue" 
+            autocomplete="off" 
+            [(ngModel)]="newBook.title" 
+            [ngModelOptions]="{standalone:true}" placeholder="name@example.com">
+            <label for="floatingInputValue">Input Title</label>
+          </div>
+          <div class="form-floating mb-3">
+            <textarea class="form-control" 
+              placeholder="Leave a comment here" 
+              autocomplete="off" id="floatingTextarea2" 
+              [ngModelOptions]="{standalone:true}"
+              [(ngModel)]="newBook.shortDescription" style="height: 100px"></textarea>
             <label for="floatingTextarea2">Input short description</label>
           </div>
-          <form class="form-floating mb-3">
-            <input type="email" class="form-control" id="floatingInputValue" placeholder="name@example.com" value="test@example.com">
-            <label for="floatingInputValue">Publish Date</label>
-          </form>
-          <form class="form-floating mb-3">
-            <input type="email" class="form-control" id="floatingInputValue" placeholder="name@example.com" value="test@example.com">
-            <label for="floatingInputValue">Authors</label>
-          </form>
-          <form class="form-floating mb-3">
-            <input type="email" class="form-control" id="floatingInputValue" placeholder="name@example.com" value="test@example.com">
+          <!-- InPUT DATE -->
+          <div class="form-floating mb-3">
+            <input type="text" 
+              class="form-control"              
+              bsDatepicker             
+              placeholder="Publish date" 
+              autocomplete="off"
+              [(ngModel)]="newBook.publishDate"
+              [ngModelOptions]="{standalone:true}"
+              >
+            <label for="floatingInputValue">Input Publish Date</label>
+          </div>
+          <!-- Add multiple autors -->
+          <div class="form-floating mb-3">
+          <input 
+            [(ngModel)]="selectedValueAuthor"
+            [typeahead]="authors"
+            [ngModelOptions]="{standalone:true}"
+            typeaheadOptionField="name"
+            (typeaheadOnSelect)="onSelectAuthor($event)"
+            type="text" 
+            class="form-control" 
+            id="floatingInputValue" 
+            placeholder="name@example.com">
+            <label for="floatingInputValue">Input authors: <span *ngFor="let item of newBook.authors; let i = index;"> <span *ngIf="i > 0">, </span> {{item.name}} </span></label>
+          </div>
+          <!-- <form class="form-floating mb-3">
+            <input type="email" class="form-control" id="floatingInputValue" placeholder="name@example.com">
             <label for="floatingInputValue">Image link</label>
-          </form>
+          </form> -->
 
         </form>
       </div>
       <div class="modal-footer">
-        <div class="btn btn-warning">Cancel</div>
-        <div class="btn btn-success">Save</div>
+        <div class="btn btn-warning" (click)="cancelModal(lgModal)">Cancel</div>
+        <div class="btn btn-success" (click)="confirmModal(lgModal)">Save</div>
       </div>
-    </div>
-  </div>
-</div>
+</ng-template>
 
 <!-- End large modal -->
 <div class="container-fluid px-5 mt-5"  *ngIf="checked">
