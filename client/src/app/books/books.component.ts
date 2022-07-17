@@ -43,6 +43,8 @@ export class BooksComponent implements OnInit {
   selectedValueAuthor?: string;
   selectedOptionAuthor: any;
   previewOptionAuthor?: any;
+  errorloading=false;
+  errorMessage?:string;
 
   newBook: Book = {} as Book;
 
@@ -101,9 +103,13 @@ export class BooksComponent implements OnInit {
         this.books = new MatTableDataSource<Book>(response);
         console.log(this.books);
         this.books.paginator = this.paginator!;
+        this.errorloading=false;
       },
       error: (err) => {
-        console.log('Error load books -> ', err);
+        this.errorloading=true;
+        this.errorMessage=JSON.stringify( err);
+        this.toastrService.error("", "Error getting data.")
+        console.log('Error load books -> ', err.error.jsonStringify());
       },
     });
   }

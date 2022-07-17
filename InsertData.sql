@@ -325,3 +325,10 @@ INSERT INTO Book_Author ( BookId, AuthorId) VALUES (	103	,	103	);
 INSERT INTO Book_Author ( BookId, AuthorId) VALUES (	104	,	104	);
 INSERT INTO Book_Author ( BookId, AuthorId) VALUES (	105	,	105	);
 INSERT INTO Book_Author ( BookId, AuthorId) VALUES (	106	,	106	);
+
+
+
+INSERT INTO Track_Changes ( Title, Description, IdBook, UserName) VALUES (	"First"	,	"Let", 1, "Dany", "2022-07-15 08:44:22.887"	);
+INSERT INTO Track_Changes ( Title, Description, IdBook, UserName) VALUES (	"First Stanio"	,	"Mr. William Shakespeares Comedies, Histories, & Tragedies is the 1623 published collection of William Shakespeare|Chr(39)| s plays. Modern scholars commonly refer to it as the First Folio. Printed in folio...", 1, "Fanny", "2022-05-15 08:44:22.887"	);
+
+

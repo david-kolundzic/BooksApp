@@ -84,7 +84,19 @@
 
 <!-- End large modal -->
 <div class="container-fluid px-5 mt-5"  *ngIf="checked">
-  <div class="row">
+  <h2 *ngIf="!books && !errorloading">Loading books....</h2>
+  <div class="row" *ngIf="errorloading">
+<div class="col-12">
+  <div class="alert alert-danger">
+    <h3 class="alert-header">Error loading</h3>
+    <p>
+      {{errorMessage}}
+    </p>
+  </div>
+</div>
+  </div>
+  <div class="row" *ngIf="books">
+
     <!-- <div class="col-12">Books {{ books?.length }}</div> -->
     <mat-form-field appearance="standard">
       <mat-label>Filter</mat-label>
