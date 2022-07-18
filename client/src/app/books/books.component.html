@@ -26,6 +26,15 @@
       </div>
       <div class="modal-body">
         <form >
+          <div class="form-floating mb-3" *ngIf="newBook.id">
+            <input type="text" 
+            class="form-control disabled" 
+            id="floatingIdValue" 
+            autocomplete="off" 
+            [(ngModel)]="newBook.id" 
+            [ngModelOptions]="{standalone:true}" placeholder="name@example.com" disabled>
+            <label for="floatingInputValue">Book Id</label>
+          </div>
           <div class="form-floating mb-3">
             <input type="text" 
             class="form-control" 
@@ -44,7 +53,7 @@
             <label for="floatingTextarea2">Input short description</label>
           </div>
           <!-- InPUT DATE -->
-          <div class="form-floating mb-3">
+          <div class="form-floating mb-3" *ngIf="!newBook.id">
             <input type="text" 
               class="form-control"              
               bsDatepicker             
@@ -52,12 +61,14 @@
               autocomplete="off"
               [(ngModel)]="newBook.publishDate"
               [ngModelOptions]="{standalone:true}"
+              readonly
               >
             <label for="floatingInputValue">Input Publish Date</label>
           </div>
           <!-- Add multiple autors -->
-          <div class="form-floating mb-3">
+          <div class="form-floating mb-3" *ngIf="!newBook.id">
           <input 
+          
             [(ngModel)]="selectedValueAuthor"
             [typeahead]="authors"
             [ngModelOptions]="{standalone:true}"
@@ -83,7 +94,7 @@
 </ng-template>
 
 <!-- End large modal -->
-<div class="container-fluid px-5 mt-5"  *ngIf="checked">
+<div class="container px-5 mt-5"  *ngIf="checked">
   <h2 *ngIf="!books && !errorloading">Loading books....</h2>
   <div class="row" *ngIf="errorloading">
 <div class="col-12">
@@ -125,13 +136,13 @@
         <ng-container matColumnDef="title">
             <th class="ps-3" mat-header-cell *matHeaderCellDef>Title</th>
             <td class="ps-3" mat-cell *matCellDef="let book">
-              {{book.title}}  
-              <!-- <ng-template #popTemplate><div [innerHtml]="getTitleList(book.booksHistory)"></div></ng-template> -->
-              <fa-icon 
-                class="btn btn-link ms-3"
+              <span class="float-start pt-2">
+                {{book.title}}  
+              </span><fa-icon 
+                class="btn btn-link ms-3 me-3 float-end"
                 [icon]="faClockRotateLeft" 
                 size="lg" 
-                *ngIf="book.booksHistory.length>0" 
+                *ngIf=" book?.booksHistory?.length>0" 
                 ></fa-icon>
             </td>
         </ng-container>
@@ -161,6 +172,9 @@
                     <th scope="col">Track Title Changes</th>
                     <th scope="col">Time</th>
                     <th scope="col">User</th>
+                    <th scope="col"><button class="btn btn-primary btn-sm" (click)="openEditModal(lgModal, element)">
+                     Edit Book
+                    </button></th>
                     
                   </tr>
                 </thead>
@@ -178,6 +192,7 @@
                     <td>
                       {{item.userName}}
                     </td>
+                   <td>&nbsp;</td>
                   </tr>
                 </tbody>
               </table>

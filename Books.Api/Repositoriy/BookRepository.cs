@@ -4,6 +4,7 @@ using Dapper.Contrib;
 using Dapper.Contrib.Extensions;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -146,15 +147,7 @@ namespace Books.Api.Repositoriy
             using (var txScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
 
-                var temp = await this.db.QueryFirstOrDefaultAsync<Book>("SELECT * FROM Book where Id = @Id", new { Id = book.Id });
-                if (temp != null)
-                {
-                    var param = new { Title = temp.Title, Description= temp.ShortDescription, IdBook = book.Id, UserName = "Ivica" };
-
-                    var query = "INSERT INTO Track_Changes (Title, Description, IdBook)  values ( @Title, @Description, @IdBook); " +
-                        "SELECT CAST(SCOPE_IDENTITY() as int)";
-                    await this.db.QueryAsync<int>(query, param);
-                }
+                
                 var sql = "";
                 if (book.IsNew)
                 {
@@ -173,7 +166,16 @@ namespace Books.Api.Repositoriy
                 }
                 else
                 {
+                    var temp = await this.db.QueryFirstOrDefaultAsync<Book>("SELECT * FROM Book where Id = @Id", new { Id = book.Id });
+                    if (temp != null)
+                    {
+                        var param = new { Title = temp.Title, Description = temp.ShortDescription, IdBook = book.Id, Changed = DateTime.Now, UserName = "Jhon (hard-code)" };
 
+                        var query = "INSERT INTO Track_Changes (Title, Description, IdBook, Changed, UserName)  values ( @Title, @Description, @IdBook, @Changed, @UserName); " +
+                            "SELECT CAST(SCOPE_IDENTITY() as int)";
+                        await this.db.QueryAsync<int>(query, param);
+                    }
+                    book.PublishDate = DateTime.Now;
                     sql = "UPDATE Book SET Title = @Title, ShortDescription = @ShortDescription, PublishDate = @PublishDate , Image = @Image WHERE Id = @Id";
                     await this.db.ExecuteAsync(sql, book);
 

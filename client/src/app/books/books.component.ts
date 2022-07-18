@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Book } from '../_models/book';
 import { BookService } from '../_services/book.service';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
@@ -20,6 +20,7 @@ import { CDK_CONNECTED_OVERLAY_SCROLL_STRATEGY } from '@angular/cdk/overlay/over
 import { AuthorService } from '../_services/author.service';
 import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
 import { ToastrService } from 'ngx-toastr';
+import { DATE } from 'ngx-bootstrap/chronos/units/constants';
 
 @Component({
   selector: 'app-books',
@@ -80,7 +81,8 @@ export class BooksComponent implements OnInit {
     private authorService: AuthorService,
     private route: ActivatedRoute,
     private modalService: BsModalService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private changeDetectorRefs: ChangeDetectorRef
   ) {}
 
   toggleRow(element: { expanded: boolean }) {
@@ -138,23 +140,44 @@ export class BooksComponent implements OnInit {
 
     this.modalRef = this.modalService.show(template);
   }
+  editModalOpened=false;
+  copyOfBook: Book = {} as Book;
+  openEditModal(template: TemplateRef<any>, element:any) {
+    console.log(element);
+    element.changed=Date.now();
+    this.copyOfBook = {...element}
+    this.newBook = element;
+    this.modalRef = this.modalService.show(template);
+    this.editModalOpened=true;
+  }
   confirmModal(template: TemplateRef<any>) {
-    console.log('Save data');
-    console.log(this.newBook);
-
     this.modalRef?.hide();
     this.bookService.saveBook(this.newBook).subscribe({
       next: (response) => {
-        this.toastrService.success(response.title, "Book is created!")
-        console.log("Response");
-        console.log(response);
+        this.toastrService.success(response.title, "Book is saved!")
+        if(this.editModalOpened){
+          let bookIndex = this.data.findIndex(( d:any )=> d.id === this.newBook.id); 
+         this.data[bookIndex].booksHistory.push(this.copyOfBook)
+          this.books = new MatTableDataSource<Book>(this.data);
+          this.changeDetectorRefs.detectChanges();
+        }else{
+          this.newBook.id=response.id;
+          this.newBook.bookHistory=[];
+
+          this.data.unshift(this.newBook);
+          
+          this.books= new MatTableDataSource<Book>(this.data);
+          this.changeDetectorRefs.detectChanges();
+        }
       },
       error: (err) => {
         console.log('Error save new book -> ', err);
-        this.toastrService.error(err.error, "Error create new book!")
+        this.toastrService.error(err.error, "Error save in book!")
       },
     });
   }
+
+
 
   cancelModal(templae: TemplateRef<any>) {
     console.log('cancel data');
